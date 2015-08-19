@@ -385,6 +385,17 @@ sram_swap_buffers a31_sram_swap_buffers[] = {
 	{ 0 }  /* End of the table */
 };
 
+/*
+ * A80 is an oddball hardware, which needs SPL to be loaded at 0x10000 instead
+ * of the usual 0x0. We are also using the SRAM section at 0x8100000 as the
+ * backup storage.
+ */
+sram_swap_buffers a80_sram_swap_buffers[] = {
+	{ .buf1 = 0x11800, .buf2 = 0x8100000, .size = 0x800 },
+	{ .buf1 = 0x15C00, .buf2 = 0x8100800, .size = 0x18000 - 0x15C00 },
+	{ 0 }  /* End of the table */
+};
+
 soc_sram_info soc_sram_info_table[] = {
 	{
 		.soc_id       = 0x1623, /* Allwinner A10 */
@@ -435,6 +446,13 @@ soc_sram_info soc_sram_info_table[] = {
 		.scratch_addr = 0x2000,
 		.thunk_addr   = 0x46E00, .thunk_size = 0x200,
 		.swap_buffers = a31_sram_swap_buffers,
+	},
+	{
+		.soc_id       = 0x1639, /* Allwinner A80 */
+		.spl_addr     = 0x10000,
+		.scratch_addr = 0x12000,
+		.thunk_addr   = 0x8102E00, .thunk_size = 0x200,
+		.swap_buffers = a80_sram_swap_buffers,
 	},
 	{ 0 } /* End of the table */
 };
